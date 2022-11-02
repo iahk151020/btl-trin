@@ -5,6 +5,7 @@ const {
   updateBookById,
   deleteBookById,
 } = require("../../models/book/book.service");
+const cloudinary = require("../../utils/cloudinary");
 
 const getAllBooksController = async (req, res, next) => {
   try {
@@ -28,9 +29,16 @@ const getBookByIdController = async (req, res, next) => {
 const addNewBookController = async (req, res, next) => {
   try {
     const body = req.body;
-    console.log(body);
-    await addBook(body);
-    return res.status(201).json("Add a book successfully");
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      eager: {
+        width: 400,
+        height: 400,
+      },
+    });
+
+    body.image = result.url;
+    const newBook = await addBook(body);
+    return res.status(201).json(newBook);
   } catch (error) {
     next(error);
   }

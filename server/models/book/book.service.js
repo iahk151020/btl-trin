@@ -17,7 +17,7 @@ const updateBookById = async (id, data) => {
 };
 
 const addBook = async (data) => {
-  await Book.create(data);
+  return await Book.create(data);
 };
 
 const deleteBookById = async (id) => {
