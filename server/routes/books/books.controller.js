@@ -29,14 +29,17 @@ const getBookByIdController = async (req, res, next) => {
 const addNewBookController = async (req, res, next) => {
   try {
     const body = req.body;
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      eager: {
-        width: 400,
-        height: 400,
-      },
-    });
+    let result;
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path, {
+        eager: {
+          width: 400,
+          height: 400,
+        },
+      });
+    }
 
-    body.image = result.url;
+    body.image = result ? result.url : "";
     const newBook = await addBook(body);
     return res.status(201).json(newBook);
   } catch (error) {
@@ -48,8 +51,20 @@ const updateBookByIdController = async (req, res, next) => {
   try {
     const { id } = req.params;
     const body = req.body;
+
+    let result;
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path, {
+        eager: {
+          width: 400,
+          height: 400,
+        },
+      });
+    }
+
+    body.image = result ? result.url : "";
     await updateBookById(id, body);
-    return res.status(201).json("update book successfully");
+    return res.status(200).json(`update successfully`);
   } catch (error) {
     next(error);
   }

@@ -13,7 +13,7 @@ const upload = multer({
 });
 router.get("/", getAllBooksController);
 router.get("/:id", getBookByIdController);
-router.put("/:id", updateBookByIdController);
+router.put("/:id", upload.single("image"), updateBookByIdController);
 router.post("/", upload.single("image"), addNewBookController);
 router.delete(`/:id`, deleteBookController);
 

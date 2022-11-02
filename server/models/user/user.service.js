@@ -6,7 +6,7 @@ const User = mongoose.model("User", userSchema);
 async function checkUserValid(user) {
   try {
     const existUser = await User.findOne({ username: user.username }).exec();
-    return existUser.password === user.password ? true : false;
+    return existUser && existUser.password === user.password ? true : false;
   } catch (error) {
     throw new Error(error.message);
   }

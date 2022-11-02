@@ -9,15 +9,15 @@ const getAllBooks = async () => {
 };
 
 const getABookById = async (id) => {
-  return await Book.findById(id).exec();
+  return Book.findById(id).exec();
 };
 
 const updateBookById = async (id, data) => {
-  await Book.findByIdAndUpdate(id, data);
+  await Book.updateOne({ _id: id }, data);
 };
 
 const addBook = async (data) => {
-  return await Book.create(data);
+  return Book.create(data);
 };
 
 const deleteBookById = async (id) => {
